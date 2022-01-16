@@ -48,11 +48,9 @@ const FeaturesList = [
 
 export default function Features() {
   return (
-    <Container component={MotionViewport}>
-      <div style={{ background: '#fff', minHeight: '100vh' }}>
-        <div
-          style={{ maxWidth: '1080px', textAlign: 'center', margin: 'auto', paddingTop: '70px' }}
-        >
+    <div style={{ background: '#fff', minHeight: '100vh' }}>
+      <div style={{ maxWidth: '1080px', textAlign: 'center', margin: 'auto', paddingTop: '70px' }}>
+        <Container component={MotionViewport}>
           <Typography variant="h3" sx={{ mb: 1 }}>
             Features
           </Typography>
@@ -87,8 +85,8 @@ export default function Features() {
               </Grid>
             ))}
           </Grid>
-        </div>
+        </Container>
       </div>
-    </Container>
+    </div>
   );
 }
