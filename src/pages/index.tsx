@@ -9,10 +9,7 @@ import JoinBeta from 'src/components/home/join-beta';
 export default function Home() {
   return (
     <>
-      <div
-        className="text-mobile-center"
-        style={{ backgroundColor: 'rgba(251, 251, 251, 1)', padding: '30px' }}
-      >
+      <div className="home-container">
         <HomeHero />
         <Features />
         <FeaturesDescriptopn />

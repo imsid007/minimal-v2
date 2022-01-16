@@ -74,7 +74,7 @@ const category = [
 ];
 
 const menu = [
-  { id: 1, title: 'Events', url: '/' },
+  { id: 1, title: 'Events', url: '/events' },
   { id: 2, title: 'Groups', url: '/groups' },
   { id: 3, title: 'Club Management', url: '#' },
 ];

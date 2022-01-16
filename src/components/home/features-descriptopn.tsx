@@ -47,7 +47,7 @@ const descriptionList = [
 
 export default function FeaturesDescriptopn() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh', marginTop: '70px' }}>
       <div style={{ maxWidth: '1200px', margin: 'auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '100px' }}>
           <Typography variant="h3" sx={{ mb: 1, mt: 1 }}>
