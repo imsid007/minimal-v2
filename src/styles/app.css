@@ -40,6 +40,7 @@
 
   .hero-img {
     max-width: 60%;
+    text-align: none;
     margin: auto;
   }
 
