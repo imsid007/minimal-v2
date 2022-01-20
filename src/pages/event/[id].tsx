@@ -1,22 +1,22 @@
-import { Container, Card, Button, Grid, Box, Typography, Pagination, Divider } from '@mui/material';
-import { Page } from '@react-pdf/renderer';
-import React, { useState } from 'react';
-import useSettings from 'src/hooks/useSettings';
-import Layout from 'src/layouts';
 import {
   BlogPostCommentForm,
   BlogPostCommentList,
   BlogPostTags,
 } from 'src/sections/@dashboard/blog';
+import { Container, Card, Button, Grid, Box, Typography, Pagination, Divider } from '@mui/material';
+import { Page } from '@react-pdf/renderer';
+import React, { useState, useCallback, useEffect } from 'react';
+import useSettings from 'src/hooks/useSettings';
+import Layout from 'src/layouts';
 import { ProfileCover } from 'src/sections/@dashboard/user/profile';
 import { _userAbout, _userCards } from 'src/_mock';
 import { Post } from 'src/@types/blog';
-import { useCallback } from 'react';
 import axios from 'src/utils/axios';
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { SkeletonPost } from 'src/components/skeleton';
 import UserCard1 from 'src/sections/@dashboard/user/cards/userCard1';
+import SocialsButton from 'src/components/SocialsButton';
+import { AnalyticsOrderTimeline } from 'src/sections/@dashboard/general/analytics';
 
 EventDetails.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout variant="main">{page}</Layout>;
@@ -112,6 +112,17 @@ export default function EventDetails() {
             {_userCards.map((user, index) =>
               index == 0 ? <UserCard1 key={user.id} user={user} /> : null
             )}
+            <Box sx={{ mt: 2 }}>
+              <AnalyticsOrderTimeline title="Event Timeline" />
+            </Box>
+
+            <Card sx={{ p: 4, mt: 3 }}>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Convallis donec in in purus
+                arcu velit arcu, sem. Imperdiet mi purus nunc egestas et dictumst sit.
+              </Typography>
+              <SocialsButton sx={{ mx: 0.5 }} />
+            </Card>
           </Grid>
         </Grid>
       </Container>

@@ -88,7 +88,7 @@ export default function SocialsButton({
                   sx={{
                     width: 40,
                     height: 40,
-                    backgroundColor: 'rgba(28, 62, 59, 1)',
+                    backgroundColor: 'rgba(0, 171, 85, 0.15)',
                     padding: '8px',
                     borderRadius: '50%',
                   }}

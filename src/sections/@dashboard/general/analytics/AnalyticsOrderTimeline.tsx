@@ -15,7 +15,7 @@ import { _analyticOrderTimeline } from '../../../../_mock';
 
 // ----------------------------------------------------------------------
 
-export default function AnalyticsOrderTimeline() {
+export default function AnalyticsOrderTimeline({ title }) {
   return (
     <Card
       sx={{
@@ -24,7 +24,7 @@ export default function AnalyticsOrderTimeline() {
         },
       }}
     >
-      <CardHeader title="Order Timeline" />
+      <CardHeader title={title ?? 'Order Timeline'} />
       <CardContent>
         <Timeline>
           {_analyticOrderTimeline.map((item, index) => (
