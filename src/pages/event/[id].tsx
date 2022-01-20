@@ -72,7 +72,7 @@ export default function EventDetails() {
         </Card>
 
         <Grid container spacing={2}>
-          <Grid item md={8}>
+          <Grid item sm={8}>
             <Card>
               {post && (
                 <Box sx={{ p: { xs: 3, md: 5 } }}>
@@ -108,7 +108,7 @@ export default function EventDetails() {
               {error && <Typography variant="h6">404 {error}!</Typography>}
             </Card>
           </Grid>
-          <Grid item md={4}>
+          <Grid item sm={4}>
             {_userCards.map((user, index) =>
               index == 0 ? <UserCard1 key={user.id} user={user} /> : null
             )}

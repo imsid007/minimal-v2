@@ -51,18 +51,18 @@ export default function ClubGeneral() {
         </Grid>
       </Grid>
       <Grid container spacing={3}>
-        <Grid item md={8}>
+        <Grid item sm={8}>
           <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
             <BankingRecentTransitions />
             <AnalyticsTasks />
             <AnalyticsNewsUpdate />
           </Stack>
         </Grid>
-        <Grid item md={4}>
+        <Grid item sm={4}>
           <Stack spacing={3} sx={{ mt: 2, mb: 2 }}>
             <NavbarDocs />
             <AnalyticsCurrentVisits />
-            <AnalyticsOrderTimeline />
+            <AnalyticsOrderTimeline title="Order Timeline" />
           </Stack>
         </Grid>
       </Grid>
