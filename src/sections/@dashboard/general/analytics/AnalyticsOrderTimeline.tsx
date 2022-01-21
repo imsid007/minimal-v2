@@ -15,7 +15,7 @@ import { _analyticOrderTimeline } from '../../../../_mock';
 
 // ----------------------------------------------------------------------
 
-export default function AnalyticsOrderTimeline({ title }) {
+export default function AnalyticsOrderTimeline({ title }: { title: string }) {
   return (
     <Card
       sx={{
