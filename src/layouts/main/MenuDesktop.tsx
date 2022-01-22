@@ -71,7 +71,7 @@ export default function MenuDesktop({ isOffset, isHome, navConfig }: MenuProps) 
   };
 
   return (
-    <Stack direction="row">
+    <Stack direction="row" sx={{ ml: 5 }}>
       {navConfig.map((link) => (
         <MenuDesktopItem
           key={link.title}

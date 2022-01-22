@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
+import { Box, Button, AppBar, Toolbar, Container, Stack } from '@mui/material';
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop';
 import useResponsive from '../../hooks/useResponsive';
@@ -17,6 +17,9 @@ import Label from '../../components/Label';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
+import NotificationsPopover from '../dashboard/header/NotificationsPopover';
+import AccountPopover from '../dashboard/header/AccountPopover';
+import Iconify from 'src/components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -77,22 +80,27 @@ export default function MainHeader() {
         >
           <Logo />
 
-          <Label color="info" sx={{ ml: 1 }}>
+          {/* <Label color="info" sx={{ ml: 1 }}>
             v3.0.0
-          </Label>
+          </Label> */}
+          {isDesktop && <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {isDesktop && <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
+          <div>
+            <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+              <Iconify
+                sx={{ color: 'rgba(99, 115, 129, 1)' }}
+                icon="bi:chat-fill"
+                width={24}
+                height={24}
+              />
 
-          <Button
-            variant="contained"
-            target="_blank"
-            rel="noopener"
-            href="https://material-ui.com/store/items/minimal-dashboard/"
-          >
-            Purchase Now
-          </Button>
+              <NotificationsPopover />
+              {/* <ContactsPopover /> */}
+              <AccountPopover />
+            </Stack>
+          </div>
 
           {!isDesktop && <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
         </Container>

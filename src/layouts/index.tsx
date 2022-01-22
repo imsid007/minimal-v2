@@ -5,12 +5,14 @@ import AuthGuard from '../guards/AuthGuard';
 import MainLayout from './main';
 import DashboardLayout from './dashboard';
 import LogoOnlyLayout from './LogoOnlyLayout';
+import { Stack } from '@mui/material';
+import MainHeader from './main/MainHeader';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   children: ReactNode;
-  variant?: 'main' | 'dashboard' | 'logoOnly';
+  variant?: 'main' | 'dashboard' | 'logoOnly' | 'club';
   filter?: boolean;
   tab?: number;
 };
@@ -25,6 +27,15 @@ export default function Layout({ tab, variant = 'dashboard', filter = false, chi
       <MainLayout tab={tab} filter={filter}>
         {children}
       </MainLayout>
+    );
+  }
+
+  if (variant === 'club') {
+    return (
+      <Stack sx={{ minHeight: 1, background: 'rgba(243, 247, 248, 1)' }}>
+        <MainHeader />
+        {children}
+      </Stack>
     );
   }
 
