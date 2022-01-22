@@ -16,15 +16,34 @@ import {
   Grid,
   Stack,
   InputAdornment,
+  Autocomplete,
+  Chip,
 } from '@mui/material';
 import { StepIconProps } from '@mui/material/StepIcon';
 // components
 
 import Iconify from 'src/components/Iconify';
+import { Controller } from 'react-hook-form';
 
 // ----------------------------------------------------------------------
 
 const STEPS = ['Step1', 'Step2', 'Step3'];
+
+const TAGS_OPTION = [
+  'Toy Story 3',
+  'Logan',
+  'Full Metal Jacket',
+  'Dangal',
+  'The Sting',
+  '2001: A Space Odyssey',
+  "Singin' in the Rain",
+  'Toy Story',
+  'Bicycle Thieves',
+  'The Kid',
+  'Inglourious Basterds',
+  'Snatch',
+  '3 Idiots',
+];
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -98,7 +117,7 @@ function getStepContent(step: number) {
           <TextField
             select
             fullWidth
-            label="Select"
+            label="Select Locality"
             value="Player"
             // onChange={handleChangeCurrency}
             InputProps={{
@@ -116,7 +135,7 @@ function getStepContent(step: number) {
             ))}
           </TextField>
           <Stack sx={{ textAlign: 'left' }}>
-            <Typography sx={{ opacity: 0.72, mb: 2 }}>
+            <Typography variant="h6" sx={{ opacity: 0.72, mb: 2, fontWeight: '500' }}>
               Describe the purpose of group and what you do at your events
             </Typography>
 
@@ -125,12 +144,66 @@ function getStepContent(step: number) {
         </Stack>
       );
     case 1:
-      return 'What is an ad group anyways?';
+      return (
+        <Stack spacing={2} style={{ textAlign: 'left' }}>
+          <Typography variant="h6" sx={{ opacity: 0.72, mb: 2, fontWeight: '500' }}>
+            Select category of your club
+          </Typography>
+          <TextField
+            select
+            fullWidth
+            placeholder="Bike riding"
+            label="Select Locality"
+            value="Player"
+            // onChange={handleChangeCurrency}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="carbon:location-filled" width={24} height={24} />
+                </InputAdornment>
+              ),
+            }}
+          >
+            {options.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+          <Stack sx={{ textAlign: 'left' }}>
+            <Typography variant="h6" sx={{ opacity: 0.72, mb: 2, fontWeight: '500' }}>
+              Sub categories.Be specific so that we can recomend to the relevent people
+            </Typography>
+            {/* <Controller
+              name="tags"
+              control={control}
+              render={({ field }) => ( */}
+            <Autocomplete
+              // {...field}
+
+              multiple
+              freeSolo
+              // onChange={(event, newValue) => field.onChange(newValue)}
+              options={TAGS_OPTION.map((option) => option)}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
+                ))
+              }
+              renderInput={(params) => <TextField label="Tags" {...params} />}
+            />
+            {/* )}
+            /> */}
+          </Stack>
+        </Stack>
+      );
     case 2:
       return (
         <Stack spacing={2} sx={{ textAlign: 'left' }}>
           <Typography sx={{ opacity: 0.72, mb: 2 }}>
-            <Typography variant="h5">Almost there!</Typography>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: '500' }}>
+              Almost there!
+            </Typography>
             Someone from the expedition tram will review and verify your club before publishing.
             This will help us to better categorizing your club and share with relevent community
             member

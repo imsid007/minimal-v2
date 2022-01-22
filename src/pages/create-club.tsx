@@ -26,13 +26,14 @@ export default function CreateClub() {
   return (
     <Page title="The starting point for your next project">
       <Container>
-        <Grid alignItems="center" spacing={2} container style={{ minHeight: '100vh' }}>
+        <Grid
+          alignItems="center"
+          spacing={2}
+          container
+          style={{ minHeight: '100vh', padding: '100px 0' }}
+        >
           <Grid item xs={12} sm={5}>
-            <img
-              alt=""
-              style={{ width: '100%', margin: 'auto' }}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS1qPL-Aqv1BIE1DHGyvaN5PHHiGWMG3I11Q&usqp=CAU"
-            />
+            <img alt="" style={{ width: '100%', margin: 'auto' }} src="/images/walk.png" />
           </Grid>
           <Grid item xs={12} sm={7}>
             <Card sx={{ p: 5, textAlign: 'center' }}>
