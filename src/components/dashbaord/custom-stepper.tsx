@@ -5,7 +5,6 @@ import {
   Box,
   TextField,
   Step,
-  Paper,
   Button,
   Stepper,
   StepLabel,
@@ -13,7 +12,6 @@ import {
   StepConnector,
   stepConnectorClasses,
   MenuItem,
-  Grid,
   Stack,
   InputAdornment,
   Autocomplete,
@@ -234,10 +232,6 @@ export default function CustomStepper() {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   return (
