@@ -26,7 +26,7 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     // linkTo: PATH_DASHBOARD.user.profile,
-    linkTo: '/profile',
+    linkTo: '/user/sid',
   },
   {
     label: 'Settings',
