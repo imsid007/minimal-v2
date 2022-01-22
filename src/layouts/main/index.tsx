@@ -7,9 +7,9 @@ import { Box, Link, Container, Typography, Stack } from '@mui/material';
 import Logo from '../../components/Logo';
 //
 import MainFooter from './MainFooter';
-import MainHeader from './MainHeader';
-import DashboardHeader from '../dashboard/header';
 import DashboardHeaderV2 from '../dashboard/header/dashboard-header';
+import useAuth from 'src/hooks/useAuth';
+import useIsMountedRef from 'src/hooks/useIsMountedRef';
 
 // ----------------------------------------------------------------------
 

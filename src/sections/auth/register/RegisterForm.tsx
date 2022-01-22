@@ -20,6 +20,8 @@ type FormValuesProps = {
   password: string;
   firstName: string;
   lastName: string;
+  passwordConfirmation: string;
+  mobile: string;
   afterSubmit?: string;
 };
 
@@ -35,6 +37,8 @@ export default function RegisterForm() {
     lastName: Yup.string().required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
+    passwordConfirmation: Yup.string().required('Password confirmation is required'),
+    mobile:Yup.string().required('Mobile is required')
   });
 
   const defaultValues = {
@@ -42,6 +46,8 @@ export default function RegisterForm() {
     lastName: '',
     email: '',
     password: '',
+    passwordConfirmation: '',
+    mobile: ''
   };
 
   const methods = useForm<FormValuesProps>({
@@ -59,7 +65,7 @@ export default function RegisterForm() {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      await register(data.email, data.password, data.firstName, data.lastName);
+      await register(data.email, data.password, data.firstName, data.lastName, data.passwordConfirmation, data.mobile );
     } catch (error) {
       console.error(error);
       reset();
@@ -81,9 +87,26 @@ export default function RegisterForm() {
 
         <RHFTextField name="email" label="Email address" />
 
+        <RHFTextField name="mobile" label="Mobile" />
+
         <RHFTextField
           name="password"
           label="Password"
+          type={showPassword ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        <RHFTextField
+          name="passwordConfirmation"
+          label="Confirm Password"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (

@@ -13,7 +13,7 @@ module.exports = withTM({
   swcMinify: false,
   trailingSlash: true,
   env: {
-    HOST_API_KEY: 'https://minimal-assets-api.vercel.app',
+    HOST_API_KEY: 'http://localhost:8010/proxy/api/v1',
     // FIREBASE AUTH
     FIREBASE_API_KEY: '',
     FIREBASE_AUTH_DOMAIN: '',

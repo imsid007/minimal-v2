@@ -88,8 +88,9 @@ function AuthProvider({ children }: AuthProviderProps) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
+          const response = await axios.get('/me');
+          const { data } = response.data;
+          const user = data;
 
           dispatch({
             type: Types.Initial,
@@ -123,13 +124,14 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', {
-      email,
+    const response = await axios.post('/auth/signin', {
+      "username" : email,
       password,
     });
-    const { accessToken, user } = response.data;
-
-    setSession(accessToken);
+    const { token, data } = response.data;
+    console.log(token)
+    const user = data;
+    setSession(token);
     dispatch({
       type: Types.Login,
       payload: {
@@ -138,16 +140,18 @@ function AuthProvider({ children }: AuthProviderProps) {
     });
   };
 
-  const register = async (email: string, password: string, firstName: string, lastName: string) => {
-    const response = await axios.post('/api/account/register', {
+  const register = async (email: string, password: string, firstName: string, lastName: string, passwordConfirmation:string, mobile: string ) => {
+    const response = await axios.post('/auth/signup', {
       email,
       password,
-      firstName,
-      lastName,
+      "password_confirmation" : passwordConfirmation,
+      "first_name" : firstName,
+      "last_name": lastName,
+      "mobile" : mobile
     });
-    const { accessToken, user } = response.data;
-
-    window.localStorage.setItem('accessToken', accessToken);
+    const { token, data } = response.data;
+    const user = data
+    window.localStorage.setItem('accessToken', token);
     dispatch({
       type: Types.Register,
       payload: {
