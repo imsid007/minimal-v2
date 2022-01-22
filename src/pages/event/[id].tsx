@@ -1,59 +1,94 @@
-import {
-  BlogPostCommentForm,
-  BlogPostCommentList,
-  BlogPostTags,
-} from 'src/sections/@dashboard/blog';
-import { Container, Card, Button, Grid, Box, Typography, Pagination, Divider } from '@mui/material';
-import { Page } from '@react-pdf/renderer';
-import React, { useState, useCallback, useEffect } from 'react';
-import useSettings from 'src/hooks/useSettings';
-import Layout from 'src/layouts';
-import { ProfileCover } from 'src/sections/@dashboard/user/profile';
-import { _userAbout, _userCards } from 'src/_mock';
-import { Post } from 'src/@types/blog';
-import axios from 'src/utils/axios';
-import { useRouter } from 'next/router';
-import { SkeletonPost } from 'src/components/skeleton';
-import UserCard1 from 'src/sections/@dashboard/user/cards/userCard1';
-import SocialsButton from 'src/components/SocialsButton';
-import { AnalyticsOrderTimeline } from 'src/sections/@dashboard/general/analytics';
+import { capitalCase } from 'change-case';
+import { useEffect, useState } from 'react';
+// @mui
+import { styled } from '@mui/material/styles';
+import { Tab, Box, Card, Tabs, Container } from '@mui/material';
 
-EventDetails.getLayout = function getLayout(page: React.ReactElement) {
+// hooks
+
+import useSettings from 'src/hooks/useSettings';
+// _mock_
+import { _userAbout } from 'src/_mock';
+// layouts
+import Layout from 'src/layouts';
+// components
+import Page from 'src/components/Page';
+import Iconify from 'src/components/Iconify';
+
+// sections
+
+import SocialLinks from 'src/components/dashbaord/account//socialLinks';
+
+import { ProfileCover } from 'src/sections/@dashboard/user/profile';
+import { getConversations, getContacts } from 'src/redux/slices/chat';
+import { useDispatch } from 'src/redux/store';
+import ClubGeneral from 'src/components/dashbaord/event/event-general';
+import EventDetails from 'src/components/dashbaord/event/event-details';
+
+// ----------------------------------------------------------------------
+
+const TabsWrapperStyle = styled('div')(({ theme }) => ({
+  zIndex: 9,
+  bottom: 0,
+  width: '100%',
+  display: 'flex',
+  position: 'absolute',
+  backgroundColor: theme.palette.background.paper,
+  [theme.breakpoints.up('sm')]: {
+    justifyContent: 'center',
+  },
+  [theme.breakpoints.up('md')]: {
+    justifyContent: 'flex-end',
+    paddingRight: theme.spacing(3),
+  },
+}));
+
+// ----------------------------------------------------------------------
+
+UserProfile.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout variant="main">{page}</Layout>;
 };
 
-export default function EventDetails() {
+// ----------------------------------------------------------------------
+
+export default function UserProfile() {
   const { themeStretch } = useSettings();
 
-  const { query } = useRouter();
+  const [currentTab, setCurrentTab] = useState('Event Details');
+  const [isOwner, setIsOwner] = useState(true);
 
-  const { title } = query;
+  const handleChangeTab = (newValue: string) => {
+    setCurrentTab(newValue);
+  };
 
-  const [post, setPost] = useState<Post | null>(null);
+  const CLUB_TABS = [
+    {
+      value: 'Event Details',
+      icon: <Iconify icon={'ic:round-receipt'} width={20} height={20} />,
+      component: <EventDetails />,
+    },
+    {
+      value: 'Staticstics',
+      icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+      component: <ClubGeneral />,
+    },
 
-  const [error, setError] = useState(null);
+    {
+      value: 'social_links',
+      icon: <Iconify icon={'eva:share-fill'} width={20} height={20} />,
+      component: <SocialLinks myProfile={_userAbout} />,
+    },
+  ];
 
-  const getPost = useCallback(async () => {
-    try {
-      const response = await axios.get('/api/blog/post', {
-        params: { title: 'apply-these-7-secret-techniques-to-improve-event' },
-        // params: { title },
-      });
-
-      setPost(response.data.post);
-    } catch (error) {
-      console.error(error);
-      setError(error.message);
-    }
-  }, [title]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    getPost();
-  }, [getPost]);
+    dispatch(getConversations());
+    dispatch(getContacts());
+  }, [dispatch]);
 
   return (
-    <Page>
-      <Container sx={{ mt: 15, mb: 4 }} maxWidth={themeStretch ? false : 'lg'}>
+    <Page title="User: Profile">
+      <Container sx={{ mt: 15 }} maxWidth={themeStretch ? false : 'lg'}>
         <Card
           sx={{
             mb: 3,
@@ -61,70 +96,35 @@ export default function EventDetails() {
             position: 'relative',
           }}
         >
-          <Button
-            style={{ position: 'absolute', right: '20px', top: '20px', zIndex: '10' }}
-            variant="contained"
-            // startIcon={<Iconify icon={'clarity:pencil-solid'} width={20} height={20} />}
-          >
-            Get Ticket
-          </Button>
           <ProfileCover myProfile={_userAbout} />
+
+          {isOwner ? (
+            <TabsWrapperStyle>
+              <Tabs
+                value={currentTab}
+                scrollButtons="auto"
+                variant="scrollable"
+                allowScrollButtonsMobile
+                onChange={(e, value) => handleChangeTab(value)}
+              >
+                {CLUB_TABS.map((tab) => (
+                  <Tab
+                    disableRipple
+                    key={tab.value}
+                    value={tab.value}
+                    icon={tab.icon}
+                    label={capitalCase(tab.value)}
+                  />
+                ))}
+              </Tabs>
+            </TabsWrapperStyle>
+          ) : null}
         </Card>
 
-        <Grid container spacing={2}>
-          <Grid item sm={8}>
-            <Card>
-              {post && (
-                <Box sx={{ p: { xs: 3, md: 5 } }}>
-                  <Typography variant="h6" sx={{ mb: 5 }}>
-                    {post.description}
-                  </Typography>
-
-                  <Box sx={{ my: 5 }}>
-                    <Divider />
-                    <BlogPostTags post={post} />
-                    <Divider />
-                  </Box>
-
-                  <Box sx={{ display: 'flex', mb: 2 }}>
-                    <Typography variant="h4">Comments</Typography>
-                    <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
-                      ({post.comments.length})
-                    </Typography>
-                  </Box>
-
-                  <BlogPostCommentList post={post} />
-
-                  <Box sx={{ mb: 5, mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                    <Pagination count={8} color="primary" />
-                  </Box>
-
-                  <BlogPostCommentForm />
-                </Box>
-              )}
-
-              {!post && !error && <SkeletonPost />}
-
-              {error && <Typography variant="h6">404 {error}!</Typography>}
-            </Card>
-          </Grid>
-          <Grid item sm={4}>
-            {_userCards.map((user, index) =>
-              index == 0 ? <UserCard1 key={user.id} user={user} /> : null
-            )}
-            <Box sx={{ mt: 2 }}>
-              <AnalyticsOrderTimeline title="Event Timeline" />
-            </Box>
-
-            <Card sx={{ p: 4, mt: 3 }}>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Convallis donec in in purus
-                arcu velit arcu, sem. Imperdiet mi purus nunc egestas et dictumst sit.
-              </Typography>
-              <SocialsButton sx={{ mx: 0.5 }} />
-            </Card>
-          </Grid>
-        </Grid>
+        {CLUB_TABS.map((tab) => {
+          const isMatched = tab.value === currentTab;
+          return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+        })}
       </Container>
     </Page>
   );

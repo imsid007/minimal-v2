@@ -22,7 +22,7 @@ import NavbarDocs from 'src/layouts/dashboard/navbar/NavbarDocs';
 
 // ----------------------------------------------------------------------
 
-ClubGeneral.getLayout = function getLayout(page: React.ReactElement) {
+EventGeneral.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout variant="main">{page}</Layout>;
 };
 
@@ -34,7 +34,7 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
-export default function ClubGeneral() {
+export default function EventGeneral() {
   const { themeStretch } = useSettings();
 
   return (
