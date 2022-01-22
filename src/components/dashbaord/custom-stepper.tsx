@@ -94,9 +94,9 @@ function ColorlibStepIcon(props: StepIconProps) {
   const { active, completed, className } = props;
 
   const icons: { [index: string]: React.ReactElement } = {
-    1: <Iconify icon="eva:settings-2-outline" width={24} height={24} />,
-    2: <Iconify icon="eva:settings-2-outline" width={24} height={24} />,
-    3: <Iconify icon="eva:settings-2-outline" width={24} height={24} />,
+    1: <Iconify icon="mdi:airport" width={24} height={24} />,
+    2: <Iconify icon="mdi:airport" width={24} height={24} />,
+    3: <Iconify icon="mdi:airport" width={24} height={24} />,
   };
 
   return (
@@ -151,7 +151,7 @@ function getStepContent(step: number) {
             select
             fullWidth
             placeholder="Bike riding"
-            label="Select Locality"
+            // label="Select Locality"
             value="Player"
             // onChange={handleChangeCurrency}
             InputProps={{
