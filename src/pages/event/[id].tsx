@@ -2,7 +2,7 @@ import { capitalCase } from 'change-case';
 import { useEffect, useState } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Tab, Box, Card, Tabs, Container } from '@mui/material';
+import { Tab, Box, Card, Tabs, Container, Button } from '@mui/material';
 
 // hooks
 
@@ -98,6 +98,13 @@ export default function UserProfile() {
         >
           <ProfileCover myProfile={_userAbout} />
 
+          <Button
+            style={{ position: 'absolute', right: '20px', top: '20px', zIndex: '10' }}
+            variant="contained"
+            startIcon={<Iconify icon={'ic:round-receipt'} width={20} height={20} />}
+          >
+            Get Ticket
+          </Button>
           {isOwner ? (
             <TabsWrapperStyle>
               <Tabs
