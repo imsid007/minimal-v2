@@ -14,6 +14,8 @@ import TextIconLabel from 'src/components/TextIconLabel';
 
 import Iconify from 'src/components/Iconify';
 import Link from 'next/link';
+import Club from 'src/@types/club';
+import { getClubs } from 'src/redux/slices/club';
 
 // ----------------------------------------------------------------------
 
@@ -28,16 +30,15 @@ const OverlayStyle = styled('div')(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-
 type Props = {
-  user: UserData;
-};
+  club: Club
+}
 
-export default function UserCard({ user }: Props) {
-  const { name, cover, avatarUrl } = user;
+export default function UserCard({ club }: Props) {
+  const { id, name, description, category, coverImage, logo } = club;
 
   return (
-    <Link passHref href={'event/' + user.name}>
+    <Link passHref href={'event/' + club.id}>
       <Card sx={{ textAlign: 'left', cursor: 'pointer' }}>
         <Box sx={{ position: 'relative' }}>
           <SvgIconStyle
@@ -55,7 +56,7 @@ export default function UserCard({ user }: Props) {
           />
           <Avatar
             alt={name}
-            src={avatarUrl}
+            src={logo}
             sx={{
               width: 64,
               height: 64,
@@ -67,7 +68,7 @@ export default function UserCard({ user }: Props) {
             }}
           />
           <OverlayStyle />
-          <Image src={cover} alt={cover} ratio="16/9" />
+          <Image src={coverImage} alt={name} ratio="16/9" />
         </Box>
         <Box style={{ padding: '20px' }}>
           <Typography variant="body2" sx={{ color: 'text.secondary', mt: 6 }}>

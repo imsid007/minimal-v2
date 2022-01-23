@@ -1,18 +1,12 @@
-// @mui
-
-// layouts
 import Layout from '../layouts';
-// components
 import Page from '../components/Page';
 import { Box, Container } from '@mui/material';
 import { _userCards } from 'src/_mock';
 import { UserCard } from 'src/sections/@dashboard/user/cards';
-import useSettings from 'src/hooks/useSettings';
 import TabsHeader from 'src/components/dashbaord/tabs-header';
-
-// ----------------------------------------------------------------------
-
-// ----------------------------------------------------------------------
+import { getAllClubsAPI } from 'src/api';
+import Club from 'src/@types/club';
+import { useEffect, useState } from "react"
 
 Groups.getLayout = function getLayout(page: React.ReactElement) {
   return (
@@ -25,7 +19,18 @@ Groups.getLayout = function getLayout(page: React.ReactElement) {
 // ----------------------------------------------------------------------
 
 export default function Groups() {
-  const { themeStretch } = useSettings();
+  const [clubs, setClubs] = useState<Club[]>();
+
+  const getClubs = () => {
+    getAllClubsAPI().then((r) => {
+      setClubs(r.data);
+      console.log(r.data)
+    })
+  }
+
+  useEffect(() => {
+    getClubs();
+  }, [])
 
   return (
     <Page title="The starting point for your next project">
@@ -42,8 +47,8 @@ export default function Groups() {
             },
           }}
         >
-          {_userCards.map((user) => (
-            <UserCard key={user.id} user={user} />
+          {clubs?.map((club) => (
+            <UserCard key={Math.random()} club={club} />
           ))}
         </Box>
       </Container>
