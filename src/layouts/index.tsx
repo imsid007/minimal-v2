@@ -24,18 +24,22 @@ export default function Layout({ tab, variant = 'dashboard', filter = false, chi
 
   if (variant === 'main') {
     return (
-      <MainLayout tab={tab} filter={filter}>
-        {children}
-      </MainLayout>
+      <AuthGuard>
+        <MainLayout tab={tab} filter={filter}>
+          {children}
+        </MainLayout>
+      </AuthGuard>
     );
   }
 
   if (variant === 'club') {
     return (
-      <Stack sx={{ minHeight: 1, background: 'rgba(243, 247, 248, 1)' }}>
-        <MainHeader />
-        {children}
-      </Stack>
+      <AuthGuard>
+        <Stack sx={{ minHeight: 1, background: 'rgba(243, 247, 248, 1)' }}>
+          <MainHeader />
+          {children}
+        </Stack>
+      </AuthGuard>
     );
   }
 

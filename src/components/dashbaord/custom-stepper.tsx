@@ -11,7 +11,6 @@ import {
   Typography,
   StepConnector,
   stepConnectorClasses,
-  MenuItem,
   Stack,
   InputAdornment,
   Autocomplete,
@@ -22,7 +21,11 @@ import { StepIconProps } from '@mui/material/StepIcon';
 
 import Iconify from 'src/components/Iconify';
 import useIsMountedRef from 'src/hooks/useIsMountedRef';
-import axios from 'src/utils/axios';
+import { createClubAPI, getCategoriesAPI } from 'src/api';
+import { CreateClubInterface } from 'src/@types/club';
+import {  snakize } from 'src/utils/object-ops';
+import { useRouter } from 'next/router';
+import { PATH_DASHBOARD } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -92,43 +95,43 @@ function ColorlibStepIcon(props: StepIconProps) {
   );
 }
 
-interface ClubCategories{
+interface ClubCategory {
   id: number;
   name: string;
 }
 
-function getStepContent(step: number, categories: ClubCategories[]) {
-  switch (step) {
+interface GetStepsInterface {
+  activeStep: number;
+  categories: ClubCategory[];
+  setClubName: any;
+  setDescription: any;
+  setLocality: any;
+  setCategory: any;
+  setSubCategoryIds: any;
+}
+
+function getStepContent({ activeStep, categories, setClubName, setDescription, setLocality, setCategory, setSubCategoryIds }: GetStepsInterface) {
+  switch (activeStep) {
     case 0:
       return (
         <Stack spacing={2}>
-          <TextField fullWidth multiline label="Club Name" />
-          <TextField
-            select
+          <TextField onChange={(e) => setClubName(e.target.value)} fullWidth multiline label="Club Name" />
+          <Autocomplete
+            disablePortal
             fullWidth
-            label="Select Locality"
-            value="Player"
-            // onChange={handleChangeCurrency}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="carbon:location-filled" width={24} height={24} />
-                </InputAdornment>
-              ),
-            }}
-          >
-            {options.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
+            id="category"
+            options={options}
+            getOptionLabel={(option) => option}
+            onChange={(e, v: ClubCategory) => setLocality(v)}
+            renderInput={(params) => <TextField {...params} label="Locality" />}
+          />
+
           <Stack sx={{ textAlign: 'left' }}>
             <Typography variant="h6" sx={{ opacity: 0.72, mb: 2, fontWeight: '500' }}>
               Describe the purpose of group and what you do at your events
             </Typography>
 
-            <TextField rows={5} fullWidth multiline label="Describe" />
+            <TextField onChange={(e) => setDescription(e.target.value)} rows={5} fullWidth multiline label="Describe" />
           </Stack>
         </Stack>
       );
@@ -138,38 +141,34 @@ function getStepContent(step: number, categories: ClubCategories[]) {
           <Typography variant="h6" sx={{ opacity: 0.72, mb: 2, fontWeight: '500' }}>
             Select category of your club
           </Typography>
-          <TextField
-            select
+
+          <Autocomplete
+            disablePortal
             fullWidth
-            placeholder="Bike riding"
-            value="Player"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="carbon:location-filled" width={24} height={24} />
-                </InputAdornment>
-              ),
-            }}
-          >
-            {options.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </TextField>
+            id="category"
+            options={categories}
+            getOptionLabel={(option) => option.name}
+            onChange={(e, v: ClubCategory) => {setCategory(v.id)}}
+            renderInput={(params) => <TextField {...params} label="Category" />}
+          />
+
+
           <Stack sx={{ textAlign: 'left' }}>
             <Typography variant="h6" sx={{ opacity: 0.72, mb: 2, fontWeight: '500' }}>
               Sub categories.Be specific so that we can recomend to the relevent people
             </Typography>
             <Autocomplete
-              // {...field}
-
               multiple
               freeSolo
-              options={categories?.map((category) => category.name)}
+              onChange={(e, v: ClubCategory[]) => {
+                const data = v?.map(a => a.id);
+                setSubCategoryIds(data)
+              }}
+              options={categories}
+              getOptionLabel={(option) => option.name}
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
-                  <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
+                  <Chip {...getTagProps({ index })} key={option.id} size="small" label={option.name} />
                 ))
               }
               renderInput={(params) => <TextField label="Tags" {...params} />}
@@ -197,7 +196,7 @@ function getStepContent(step: number, categories: ClubCategories[]) {
               club which will help us to verify you it quickly
             </Typography>
 
-            <TextField rows={5} fullWidth multiline label="Describe" />
+            <TextField onChange={(e)=>setDescription(e.target.value)} rows={5} fullWidth multiline label="Describe" />
           </Stack>
         </Stack>
       );
@@ -211,33 +210,52 @@ export default function CustomStepper() {
   const [activeStep, setActiveStep] = useState(0);
 
   const isMountedRef = useIsMountedRef();
-  const [categories, setCategories] = useState<ClubCategories[]>([]);
+  const [categories, setCategories] = useState<ClubCategory[]>([]);
+
+  const [clubName, setClubName] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState();
+  const [subCategoryIds, setSubCategoryIds] = useState();
+  const [locality, setLocality] = useState("Pune");
+  const { push } = useRouter();
 
   const getCategories = useCallback(async () => {
-    try {
-      const response = await axios.get('/clubs/categories');
+    getCategoriesAPI().then(response => {
       if (isMountedRef.current) {
-        setCategories(response.data.data);
+        setCategories(response.data);
       }
-    } catch (err) {
-      console.log(err)
-    }
+    });
   }, [isMountedRef]);
 
-  useEffect(() => {
-    getCategories();
-  }, [categories]);
+  const createClub = () => {
+    const data: CreateClubInterface = {
+      categoryId: category,
+      subCategories: subCategoryIds,
+      locality: locality,
+      description: description,
+      name: clubName
+    }
+    console.log(data)
+    createClubAPI(snakize(data)).then(r=>{
+      push(PATH_DASHBOARD.root)
+    });
+  }
 
   const handleNext = () => {
-    if(activeStep == 2){
-
+    if(activeStep == 2) {
+      createClub()
+    }else{
+      setActiveStep((prevActiveStep: number) => prevActiveStep + 1);  
     }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
   };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <>
@@ -255,7 +273,10 @@ export default function CustomStepper() {
       </Stepper>
 
       <Box>
-        <Typography sx={{ my: 1 }}>{getStepContent(activeStep, categories)}</Typography>
+        <Typography sx={{ my: 1 }}>{getStepContent({
+          activeStep: activeStep, categories: categories, setClubName: setClubName,
+          setDescription: setDescription, setLocality: setLocality, setCategory: setCategory, setSubCategoryIds: setSubCategoryIds
+        })}</Typography>
       </Box>
 
       <Box sx={{ textAlign: 'right' }}>

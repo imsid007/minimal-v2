@@ -5,7 +5,7 @@
   "description": "next.js & typescript",
   "private": true,
   "scripts": {
-    "proxy" : "lcp --proxyUrl https://api-dev-vbgq.mezohub.com",
+    "proxy": "lcp --proxyUrl https://api-dev-vbgq.mezohub.com",
     "lint": "next lint",
     "lint:es": "eslint --ext .ts,.tsx .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",
