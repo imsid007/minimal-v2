@@ -3,12 +3,10 @@ import {
   BlogPostCommentList,
   BlogPostTags,
 } from 'src/sections/@dashboard/blog';
-import { Container, Card, Button, Grid, Box, Typography, Pagination, Divider } from '@mui/material';
+import { Card, Grid, Box, Typography, Pagination, Divider } from '@mui/material';
 import { Page } from '@react-pdf/renderer';
 import React, { useState, useCallback, useEffect } from 'react';
-import useSettings from 'src/hooks/useSettings';
 import Layout from 'src/layouts';
-import { ProfileCover } from 'src/sections/@dashboard/user/profile';
 import { _userAbout, _userCards } from 'src/_mock';
 import { Post } from 'src/@types/blog';
 import axios from 'src/utils/axios';
@@ -23,7 +21,6 @@ EventDetails.getLayout = function getLayout(page: React.ReactElement) {
 };
 
 export default function EventDetails() {
-  const { themeStretch } = useSettings();
 
   const { query } = useRouter();
 
@@ -52,7 +49,7 @@ export default function EventDetails() {
   }, [getPost]);
 
   return (
-    <Page sx={{ mt: 2, mb: 4 }}>
+    <Page >
       <Grid container spacing={2}>
         <Grid item sm={8}>
           <Card>

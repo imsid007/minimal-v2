@@ -7,9 +7,6 @@ import { useDispatch } from 'react-redux';
 import { getConversations, getContacts } from 'src/redux/slices/chat';
 // routes
 
-import TabsHeader from './tabs-header';
-
-import { PATH_DASHBOARD } from 'src/routes/paths';
 
 // hooks
 import useSettings from 'src/hooks/useSettings';

@@ -32,7 +32,6 @@ import {
   RHFUploadSingleFile,
 } from '../../../components/hook-form';
 //
-import BlogNewPostPreview from './BlogNewPostPreview';
 
 // ----------------------------------------------------------------------
 
@@ -270,15 +269,6 @@ export default function BlogNewPostForm() {
           </Grid>
         </Grid>
       </FormProvider>
-
-      <BlogNewPostPreview
-        values={values}
-        isOpen={open}
-        isValid={isValid}
-        isSubmitting={isSubmitting}
-        onClose={handleClosePreview}
-        onSubmit={handleSubmit(onSubmit)}
-      />
     </>
   );
 }

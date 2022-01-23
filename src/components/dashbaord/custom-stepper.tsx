@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
 import {
@@ -21,27 +21,12 @@ import { StepIconProps } from '@mui/material/StepIcon';
 // components
 
 import Iconify from 'src/components/Iconify';
-import { Controller } from 'react-hook-form';
+import useIsMountedRef from 'src/hooks/useIsMountedRef';
+import axios from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
 const STEPS = ['Step1', 'Step2', 'Step3'];
-
-const TAGS_OPTION = [
-  'Toy Story 3',
-  'Logan',
-  'Full Metal Jacket',
-  'Dangal',
-  'The Sting',
-  '2001: A Space Odyssey',
-  "Singin' in the Rain",
-  'Toy Story',
-  'Bicycle Thieves',
-  'The Kid',
-  'Inglourious Basterds',
-  'Snatch',
-  '3 Idiots',
-];
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -88,6 +73,7 @@ const ColorlibStepIconRoot = styled('div')<{
     backgroundColor: 'rgb(0, 171, 85)',
   }),
 }));
+
 const options = ['Pune ', 'Mumbai'];
 
 function ColorlibStepIcon(props: StepIconProps) {
@@ -106,7 +92,12 @@ function ColorlibStepIcon(props: StepIconProps) {
   );
 }
 
-function getStepContent(step: number) {
+interface ClubCategories{
+  id: number;
+  name: string;
+}
+
+function getStepContent(step: number, categories: ClubCategories[]) {
   switch (step) {
     case 0:
       return (
@@ -151,9 +142,7 @@ function getStepContent(step: number) {
             select
             fullWidth
             placeholder="Bike riding"
-            // label="Select Locality"
             value="Player"
-            // onChange={handleChangeCurrency}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -172,17 +161,12 @@ function getStepContent(step: number) {
             <Typography variant="h6" sx={{ opacity: 0.72, mb: 2, fontWeight: '500' }}>
               Sub categories.Be specific so that we can recomend to the relevent people
             </Typography>
-            {/* <Controller
-              name="tags"
-              control={control}
-              render={({ field }) => ( */}
             <Autocomplete
               // {...field}
 
               multiple
               freeSolo
-              // onChange={(event, newValue) => field.onChange(newValue)}
-              options={TAGS_OPTION.map((option) => option)}
+              options={categories?.map((category) => category.name)}
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                   <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
@@ -226,7 +210,28 @@ function getStepContent(step: number) {
 export default function CustomStepper() {
   const [activeStep, setActiveStep] = useState(0);
 
+  const isMountedRef = useIsMountedRef();
+  const [categories, setCategories] = useState<ClubCategories[]>([]);
+
+  const getCategories = useCallback(async () => {
+    try {
+      const response = await axios.get('/clubs/categories');
+      if (isMountedRef.current) {
+        setCategories(response.data.data);
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getCategories();
+  }, [categories]);
+
   const handleNext = () => {
+    if(activeStep == 2){
+
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -250,7 +255,7 @@ export default function CustomStepper() {
       </Stepper>
 
       <Box>
-        <Typography sx={{ my: 1 }}>{getStepContent(activeStep)}</Typography>
+        <Typography sx={{ my: 1 }}>{getStepContent(activeStep, categories)}</Typography>
       </Box>
 
       <Box sx={{ textAlign: 'right' }}>

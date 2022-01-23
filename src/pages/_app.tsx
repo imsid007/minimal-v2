@@ -54,8 +54,6 @@ import { CollapseDrawerProvider } from '../contexts/CollapseDrawerContext';
 // theme
 import ThemeProvider from '../theme';
 // components
-import Settings from '../components/settings';
-import { ChartStyle } from '../components/chart';
 import RtlLayout from '../components/RtlLayout';
 import ProgressBar from '../components/ProgressBar';
 import ThemeColorPresets from '../components/ThemeColorPresets';
@@ -63,15 +61,8 @@ import NotistackProvider from '../components/NotistackProvider';
 import ThemeLocalization from '../components/ThemeLocalization';
 import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 
-// Check our docs
-// https://docs-minimals.vercel.app/authentication/ts-version
 
 import { AuthProvider } from '../contexts/JWTContext';
-// import { AuthProvider } from '../contexts/AwsCognitoContext';
-// import { AuthProvider } from '../contexts/Auth0Context';
-// import { AuthProvider } from '../contexts/FirebaseContext';
-
-// ----------------------------------------------------------------------
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -105,7 +96,6 @@ export default function MyApp(props: MyAppProps) {
                         <ThemeColorPresets>
                           <ThemeLocalization>
                             <RtlLayout>
-                              <ChartStyle />
                               {/* <Settings /> */}
                               <ProgressBar />
                               {getLayout(<Component {...pageProps} />)}

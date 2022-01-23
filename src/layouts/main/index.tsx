@@ -7,9 +7,7 @@ import { Box, Link, Container, Typography, Stack } from '@mui/material';
 import Logo from '../../components/Logo';
 //
 import MainFooter from './MainFooter';
-import DashboardHeaderV2 from '../dashboard/header/dashboard-header';
-import useAuth from 'src/hooks/useAuth';
-import useIsMountedRef from 'src/hooks/useIsMountedRef';
+import Header from '../dashboard/header';
 
 // ----------------------------------------------------------------------
 
@@ -25,8 +23,7 @@ export default function MainLayout({ tab, children, filter }: Props) {
 
   return (
     <Stack sx={{ minHeight: 1 }}>
-      {/* <MainHeader /> */}
-      <DashboardHeaderV2 tab={tab} filter={filter} />
+      <Header tab={tab} filter={filter} />
 
       {children}
 

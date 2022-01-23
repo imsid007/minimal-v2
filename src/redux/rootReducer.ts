@@ -1,12 +1,11 @@
 import { combineReducers } from 'redux';
-import { persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 // slices
-import mailReducer from './slices/mail';
 import chatReducer from './slices/chat';
-import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
-import kanbanReducer from './slices/kanban';
+import eventReducer from './slices/event';
+import clubReducer from './slices/club';
+import categoryReducer from './slices/category';
 
 // ----------------------------------------------------------------------
 
@@ -31,19 +30,14 @@ const rootPersistConfig = {
   whitelist: [],
 };
 
-const productPersistConfig = {
-  key: 'product',
-  storage,
-  keyPrefix: 'redux-',
-  whitelist: ['sortBy', 'checkout'],
-};
+
 
 const rootReducer = combineReducers({
-  mail: mailReducer,
   chat: chatReducer,
   calendar: calendarReducer,
-  kanban: kanbanReducer,
-  product: persistReducer(productPersistConfig, productReducer),
+  // events: eventReducer,
+  // club: clubReducer,
+  // category : categoryReducer
 });
 
 export { rootPersistConfig, rootReducer };

@@ -3,9 +3,8 @@ import Layout from 'src/layouts';
 // components
 import Page from 'src/components/Page';
 
-import { Box, Container, Grid, Card, Typography } from '@mui/material';
+import { Container, Grid, Card, Typography } from '@mui/material';
 import { _userCards } from 'src/_mock';
-import CustomizedSteppers from 'src/sections/overview/mui/stepper/CustomizedStepper';
 import CustomStepper from 'src/components/dashbaord/custom-stepper';
 
 // ----------------------------------------------------------------------
