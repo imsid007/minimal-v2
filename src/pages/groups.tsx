@@ -6,7 +6,8 @@ import { UserCard } from 'src/sections/@dashboard/user/cards';
 import TabsHeader from 'src/components/dashbaord/tabs-header';
 import { getAllClubsAPI } from 'src/api';
 import Club from 'src/@types/club';
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react';
+import GroupCard from 'src/sections/@dashboard/user/cards/groupCard';
 
 Groups.getLayout = function getLayout(page: React.ReactElement) {
   return (
@@ -24,13 +25,13 @@ export default function Groups() {
   const getClubs = () => {
     getAllClubsAPI().then((r) => {
       setClubs(r.data);
-      console.log(r.data)
-    })
-  }
+      console.log(r.data);
+    });
+  };
 
   useEffect(() => {
     getClubs();
-  }, [])
+  }, []);
 
   return (
     <Page title="The starting point for your next project">
@@ -48,7 +49,8 @@ export default function Groups() {
           }}
         >
           {clubs?.map((club) => (
-            <UserCard key={Math.random()} club={club} />
+            <GroupCard key={Math.random()} club={club} />
+            // <UserCard key={Math.random()} club={club} />
           ))}
         </Box>
       </Container>
